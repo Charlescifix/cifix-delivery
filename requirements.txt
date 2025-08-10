@@ -8,4 +8,4 @@ asyncpg==0.29.0
 alembic==1.12.1
 python-dotenv==1.0.0
 itsdangerous==2.1.2
-weasyprint==60.2
+reportlab==4.0.7

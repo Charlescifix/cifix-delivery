@@ -1,140 +1,158 @@
-from weasyprint import HTML, CSS
-from jinja2 import Template
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter, A4
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from datetime import datetime
 from typing import Dict, Any
 import json
+import io
 from ..models import Student, Module, EnrollmentProgress, AssessmentResult, ProgressStatus
 
 class ReportService:
     
     @staticmethod
     def generate_pdf_report(student_data: Dict[str, Any]) -> bytes:
-        html_template = """
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="utf-8">
-            <style>
-                body { font-family: Arial, sans-serif; margin: 40px; }
-                .header { text-align: center; margin-bottom: 30px; }
-                .section { margin-bottom: 25px; }
-                .progress-bar { 
-                    width: 100%; 
-                    height: 20px; 
-                    background-color: #f0f0f0; 
-                    border-radius: 10px; 
-                    overflow: hidden; 
-                }
-                .progress-fill { 
-                    height: 100%; 
-                    background-color: #4CAF50; 
-                    transition: width 0.3s ease; 
-                }
-                .module-item { 
-                    padding: 10px; 
-                    margin: 5px 0; 
-                    border-left: 4px solid #ddd; 
-                }
-                .module-done { border-left-color: #4CAF50; }
-                .module-started { border-left-color: #FFC107; }
-                .stats-grid { 
-                    display: grid; 
-                    grid-template-columns: 1fr 1fr 1fr; 
-                    gap: 20px; 
-                    margin: 20px 0; 
-                }
-                .stat-box { 
-                    text-align: center; 
-                    padding: 15px; 
-                    background-color: #f8f9fa; 
-                    border-radius: 8px; 
-                }
-            </style>
-        </head>
-        <body>
-            <div class="header">
-                <h1>🎓 Learning Progress Report</h1>
-                <h2>{{ student.first_name }}</h2>
-                <p>Generated on {{ report_date }}</p>
-            </div>
-            
-            <div class="section">
-                <h3>📊 Overall Progress</h3>
-                <div class="stats-grid">
-                    <div class="stat-box">
-                        <h4>{{ completed_modules }}</h4>
-                        <p>Modules Completed</p>
-                    </div>
-                    <div class="stat-box">
-                        <h4>⭐ {{ total_stars }}</h4>
-                        <p>Stars Earned</p>
-                    </div>
-                    <div class="stat-box">
-                        <h4>{{ progress_percentage }}%</h4>
-                        <p>Course Progress</p>
-                    </div>
-                </div>
-                
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: {{ progress_percentage }}%"></div>
-                </div>
-            </div>
-            
-            {% if latest_assessment %}
-            <div class="section">
-                <h3>🧪 Latest Assessment</h3>
-                <p><strong>Level:</strong> {{ latest_assessment.level }}</p>
-                <p><strong>Score:</strong> {{ latest_assessment.raw_score }}/100</p>
-                <p><strong>Date:</strong> {{ latest_assessment.completed_at.strftime('%Y-%m-%d') }}</p>
-                
-                {% if domain_breakdown %}
-                <h4>Domain Breakdown:</h4>
-                <ul>
-                    {% for domain, score in domain_breakdown.items() %}
-                    <li><strong>{{ domain.title() }}:</strong> {{ score }}</li>
-                    {% endfor %}
-                </ul>
-                {% endif %}
-            </div>
-            {% endif %}
-            
-            <div class="section">
-                <h3>📚 Module Progress</h3>
-                {% for module in modules %}
-                <div class="module-item {% if progress_data.get(module.id) and progress_data[module.id].status.value == 'DONE' %}module-done{% elif progress_data.get(module.id) and progress_data[module.id].status.value == 'STARTED' %}module-started{% endif %}">
-                    <strong>Week {{ module.week_no }}: {{ module.title }}</strong>
-                    <p>Status: 
-                        {% if progress_data.get(module.id) %}
-                            {% if progress_data[module.id].status.value == 'DONE' %}
-                                ✅ Completed ({{ progress_data[module.id].stars }} stars)
-                            {% elif progress_data[module.id].status.value == 'STARTED' %}
-                                🟡 In Progress
-                            {% else %}
-                                ⭕ Not Started
-                            {% endif %}
-                        {% else %}
-                            ⭕ Not Started
-                        {% endif %}
-                    </p>
-                </div>
-                {% endfor %}
-            </div>
-            
-            <div class="section" style="margin-top: 40px; text-align: center; color: #666;">
-                <p><em>Keep up the great work! 🌟</em></p>
-            </div>
-        </body>
-        </html>
-        """
+        buffer = io.BytesIO()
+        doc = SimpleDocTemplate(buffer, pagesize=A4)
+        styles = getSampleStyleSheet()
+        story = []
         
-        template = Template(html_template)
-        html_content = template.render(**student_data)
+        # Custom styles
+        title_style = ParagraphStyle(
+            'CustomTitle',
+            parent=styles['Heading1'],
+            fontSize=24,
+            textColor=colors.darkblue,
+            spaceAfter=30,
+            alignment=1  # Center alignment
+        )
         
-        html_doc = HTML(string=html_content)
-        return html_doc.write_pdf()
+        subtitle_style = ParagraphStyle(
+            'CustomSubtitle',
+            parent=styles['Heading2'],
+            fontSize=16,
+            textColor=colors.darkgreen,
+            spaceAfter=20
+        )
+        
+        # Title
+        story.append(Paragraph("🎓 Learning Progress Report", title_style))
+        story.append(Paragraph(f"<b>{student_data['student'].first_name}</b>", styles['Heading2']))
+        story.append(Paragraph(f"Generated on {student_data['report_date']}", styles['Normal']))
+        story.append(Spacer(1, 20))
+        
+        # Overall Progress Section
+        story.append(Paragraph("📊 Overall Progress", subtitle_style))
+        
+        # Stats table
+        stats_data = [
+            ['Modules Completed', 'Stars Earned', 'Course Progress'],
+            [
+                str(student_data['completed_modules']),
+                f"⭐ {student_data['total_stars']}",
+                f"{student_data['progress_percentage']}%"
+            ]
+        ]
+        
+        stats_table = Table(stats_data, colWidths=[2*inch, 2*inch, 2*inch])
+        stats_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 12),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('FONTSIZE', (0, 1), (-1, -1), 10),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black)
+        ]))
+        
+        story.append(stats_table)
+        story.append(Spacer(1, 20))
+        
+        # Assessment Section (if available)
+        if student_data.get('latest_assessment'):
+            story.append(Paragraph("🧪 Latest Assessment", subtitle_style))
+            assessment = student_data['latest_assessment']
+            
+            assessment_info = f"""
+            <b>Level:</b> {assessment.level}<br/>
+            <b>Score:</b> {assessment.raw_score}/100<br/>
+            <b>Date:</b> {assessment.completed_at.strftime('%Y-%m-%d')}
+            """
+            story.append(Paragraph(assessment_info, styles['Normal']))
+            
+            # Domain breakdown
+            if student_data.get('domain_breakdown'):
+                story.append(Paragraph("<b>Domain Breakdown:</b>", styles['Normal']))
+                for domain, score in student_data['domain_breakdown'].items():
+                    story.append(Paragraph(f"• <b>{domain.title()}:</b> {score}", styles['Normal']))
+            
+            story.append(Spacer(1, 20))
+        
+        # Module Progress Section
+        story.append(Paragraph("📚 Module Progress", subtitle_style))
+        
+        # Module progress table
+        module_data = [['Week', 'Module Title', 'Status', 'Stars']]
+        
+        for module in student_data['modules']:
+            progress = student_data['progress_data'].get(module.id)
+            if progress:
+                if progress.status == ProgressStatus.DONE:
+                    status = "✅ Completed"
+                    stars = str(progress.stars)
+                elif progress.status == ProgressStatus.STARTED:
+                    status = "🟡 In Progress"
+                    stars = "0"
+                else:
+                    status = "⭕ Not Started"
+                    stars = "0"
+            else:
+                status = "⭕ Not Started"
+                stars = "0"
+            
+            module_data.append([
+                f"Week {module.week_no}",
+                module.title,
+                status,
+                stars
+            ])
+        
+        module_table = Table(module_data, colWidths=[1*inch, 3*inch, 1.5*inch, 0.5*inch])
+        module_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.darkgreen),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 10),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.lightgrey),
+            ('FONTSIZE', (0, 1), (-1, -1), 9),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black)
+        ]))
+        
+        story.append(module_table)
+        story.append(Spacer(1, 40))
+        
+        # Footer
+        footer_style = ParagraphStyle(
+            'Footer',
+            parent=styles['Normal'],
+            fontSize=12,
+            textColor=colors.grey,
+            alignment=1  # Center alignment
+        )
+        story.append(Paragraph("<i>Keep up the great work! 🌟</i>", footer_style))
+        
+        # Build PDF
+        doc.build(story)
+        buffer.seek(0)
+        return buffer.getvalue()
     
     @staticmethod
     async def get_student_report_data(student: Student, db: AsyncSession) -> Dict[str, Any]:
