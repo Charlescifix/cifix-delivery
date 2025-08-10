@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - CIFIX Kids Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.0/dist/full.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-gray-800">🛠️ Admin Panel</h1>
+                <div class="space-x-4">
+                    <a href="/admin/modules" class="btn btn-outline">Manage Modules</a>
+                    <a href="/admin/students" class="btn btn-outline">Manage Students</a>
+                    <a href="/" class="btn btn-primary">← Main Site</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <!-- Stats Overview -->
+        <div class="grid md:grid-cols-3 gap-6 mb-8">
+            <div class="stat bg-white rounded-lg shadow-lg">
+                <div class="stat-figure text-primary">
+                    <div class="text-3xl">👥</div>
+                </div>
+                <div class="stat-title">Total Students</div>
+                <div class="stat-value text-primary">{{ students_count }}</div>
+                <div class="stat-desc">Registered learners</div>
+            </div>
+
+            <div class="stat bg-white rounded-lg shadow-lg">
+                <div class="stat-figure text-secondary">
+                    <div class="text-3xl">📚</div>
+                </div>
+                <div class="stat-title">Total Modules</div>
+                <div class="stat-value text-secondary">{{ modules_count }}</div>
+                <div class="stat-desc">Learning modules</div>
+            </div>
+
+            <div class="stat bg-white rounded-lg shadow-lg">
+                <div class="stat-figure text-accent">
+                    <div class="text-3xl">🧪</div>
+                </div>
+                <div class="stat-title">Assessments Taken</div>
+                <div class="stat-value text-accent">{{ assessments_count }}</div>
+                <div class="stat-desc">Total completions</div>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Recent Students -->
+            <div class="card bg-white shadow-lg">
+                <div class="card-body">
+                    <h2 class="card-title text-2xl mb-4">👥 Recent Students</h2>
+                    <div class="overflow-x-auto">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Access Code</th>
+                                    <th>Joined</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for student in recent_students %}
+                                <tr>
+                                    <td>{{ student.first_name }}</td>
+                                    <td>{{ student.access_code }}</td>
+                                    <td>{{ student.created_at.strftime('%Y-%m-%d') }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-actions justify-end">
+                        <a href="/admin/students" class="btn btn-primary">View All Students</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module Overview -->
+            <div class="card bg-white shadow-lg">
+                <div class="card-body">
+                    <h2 class="card-title text-2xl mb-4">📚 Learning Modules</h2>
+                    <div class="space-y-2">
+                        {% for module in modules %}
+                        <div class="flex justify-between items-center p-3 bg-base-200 rounded-lg">
+                            <div>
+                                <span class="font-semibold">Week {{ module.week_no }}:</span>
+                                {{ module.title }}
+                            </div>
+                            <div>
+                                {% if module.is_published %}
+                                    <span class="badge badge-success">✅ Published</span>
+                                {% else %}
+                                    <span class="badge badge-warning">📝 Draft</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="card-actions justify-end">
+                        <a href="/admin/modules" class="btn btn-primary">Manage Modules</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card bg-white shadow-lg mt-8">
+            <div class="card-body">
+                <h2 class="card-title text-2xl mb-4">⚡ Quick Actions</h2>
+                <div class="grid md:grid-cols-4 gap-4">
+                    <a href="/admin/modules" class="btn btn-lg btn-primary">
+                        <div class="text-center">
+                            <div class="text-2xl">📚</div>
+                            <span>Add Module</span>
+                        </div>
+                    </a>
+                    <a href="/admin/students" class="btn btn-lg btn-secondary">
+                        <div class="text-center">
+                            <div class="text-2xl">👥</div>
+                            <span>Add Student</span>
+                        </div>
+                    </a>
+                    <a href="/admin/assessments.csv" class="btn btn-lg btn-accent">
+                        <div class="text-center">
+                            <div class="text-2xl">📊</div>
+                            <span>Export Data</span>
+                        </div>
+                    </a>
+                    <a href="/" class="btn btn-lg btn-outline">
+                        <div class="text-center">
+                            <div class="text-2xl">🏠</div>
+                            <span>Main Site</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="space-y-8">
+    <!-- Module Header -->
+    <div class="hero bg-gradient-to-r from-kid-green to-kid-blue rounded-3xl text-white p-8">
+        <div class="hero-content text-center">
+            <div>
+                <div class="text-6xl mb-4">📚</div>
+                <h1 class="text-4xl font-bold mb-2">Week {{ module.week_no }}: {{ module.title }}</h1>
+                <div class="flex items-center justify-center space-x-4 mt-4">
+                    {% if progress.status == progress_status.DONE %}
+                        <span class="badge badge-success text-lg px-4 py-2">✅ Completed ({{ progress.stars }} ⭐)</span>
+                    {% elif progress.status == progress_status.STARTED %}
+                        <span class="badge badge-warning text-lg px-4 py-2">🟡 In Progress</span>
+                    {% else %}
+                        <span class="badge badge-ghost text-lg px-4 py-2">⭕ Just Started</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Module Content -->
+    <div class="grid md:grid-cols-2 gap-8">
+        <!-- Video Section -->
+        {% if module.video_url %}
+        <div class="card bg-white shadow-xl border-t-4 border-kid-blue">
+            <div class="card-body">
+                <h2 class="card-title text-2xl text-kid-blue mb-4">
+                    <span class="text-3xl">🎬</span>
+                    Watch & Learn
+                </h2>
+                <div class="aspect-video bg-gray-100 rounded-2xl flex items-center justify-center mb-4">
+                    {% if 'youtube.com' in module.video_url or 'youtu.be' in module.video_url %}
+                        <iframe src="{{ module.video_url.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/') }}" 
+                                class="w-full h-full rounded-2xl" frameborder="0" allowfullscreen></iframe>
+                    {% else %}
+                        <a href="{{ module.video_url }}" target="_blank" class="btn btn-lg bg-kid-blue hover:bg-blue-600 text-white border-0">
+                            ▶️ Open Video
+                        </a>
+                    {% endif %}
+                </div>
+                <p class="text-lg text-gray-600">Click play to start your learning journey!</p>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Resources Section -->
+        {% if module.resource_url %}
+        <div class="card bg-white shadow-xl border-t-4 border-kid-green">
+            <div class="card-body">
+                <h2 class="card-title text-2xl text-kid-green mb-4">
+                    <span class="text-3xl">📄</span>
+                    Learning Materials
+                </h2>
+                <p class="text-lg mb-6">Download or view extra materials to help you learn!</p>
+                <div class="card-actions">
+                    <a href="{{ module.resource_url }}" target="_blank" 
+                       class="btn btn-lg bg-kid-green hover:bg-green-600 text-white border-0 w-full">
+                        📥 View Resources
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Actions Section -->
+    <div class="grid md:grid-cols-3 gap-6">
+        {% if module.meet_url %}
+        <div class="card bg-white shadow-xl border-t-4 border-kid-purple">
+            <div class="card-body text-center">
+                <div class="text-4xl mb-4">🎓</div>
+                <h3 class="card-title text-xl text-kid-purple justify-center">Join Live Class</h3>
+                <p class="text-lg mb-4">Meet your teacher and ask questions!</p>
+                <div class="card-actions justify-center">
+                    <a href="{{ module.meet_url }}" target="_blank" 
+                       class="btn btn-lg bg-kid-purple hover:bg-purple-600 text-white border-0">
+                        Join Class
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="card bg-white shadow-xl border-t-4 border-kid-yellow">
+            <div class="card-body text-center">
+                <div class="text-4xl mb-4">🧪</div>
+                <h3 class="card-title text-xl text-kid-yellow justify-center">Take Assessment</h3>
+                <p class="text-lg mb-4">Test your new skills!</p>
+                <div class="card-actions justify-center">
+                    <a href="/assessment/start" target="_blank" 
+                       class="btn btn-lg bg-kid-yellow hover:bg-yellow-500 text-black border-0">
+                        Start Test
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {% if progress.status != progress_status.DONE %}
+        <div class="card bg-white shadow-xl border-t-4 border-kid-pink">
+            <div class="card-body text-center">
+                <div class="text-4xl mb-4">✅</div>
+                <h3 class="card-title text-xl text-kid-pink justify-center">Mark Complete</h3>
+                <p class="text-lg mb-4">Finished the lesson? Great job!</p>
+                <div class="card-actions justify-center">
+                    <form method="post" action="/modules/{{ module.id }}/complete">
+                        <button type="submit" class="btn btn-lg bg-kid-pink hover:bg-pink-600 text-white border-0">
+                            Complete Lesson ⭐
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="card bg-white shadow-xl border-t-4 border-kid-green">
+            <div class="card-body text-center">
+                <div class="text-4xl mb-4">🎉</div>
+                <h3 class="card-title text-xl text-kid-green justify-center">Well Done!</h3>
+                <p class="text-lg mb-4">You earned {{ progress.stars }} stars!</p>
+                <div class="card-actions justify-center">
+                    <a href="/dashboard" class="btn btn-lg bg-kid-green hover:bg-green-600 text-white border-0">
+                        Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Navigation -->
+    <div class="flex justify-between">
+        <a href="/dashboard" class="btn btn-lg btn-outline">
+            ← Back to Dashboard
+        </a>
+        
+        <!-- Add navigation to next/previous modules if needed -->
+    </div>
+</div>
+{% endblock %}

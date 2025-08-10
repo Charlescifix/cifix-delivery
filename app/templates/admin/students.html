@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Students - CIFIX Kids Hub Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.0/dist/full.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-gray-800">👥 Manage Students</h1>
+                <div class="space-x-4">
+                    <a href="/admin/dashboard" class="btn btn-outline">← Admin Dashboard</a>
+                    <a href="/" class="btn btn-primary">Main Site</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Add New Student Form -->
+            <div class="card bg-white shadow-lg">
+                <div class="card-body">
+                    <h2 class="card-title text-2xl mb-4">➕ Add New Student</h2>
+                    
+                    <form method="post" class="space-y-4">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">First Name</span>
+                            </label>
+                            <input type="text" name="first_name" placeholder="e.g., Alex" 
+                                   class="input input-bordered" required>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Age</span>
+                            </label>
+                            <input type="number" name="age" placeholder="8" min="3" max="18" 
+                                   class="input input-bordered" required>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Parent Email</span>
+                            </label>
+                            <input type="email" name="parent_email" placeholder="parent@example.com" 
+                                   class="input input-bordered" required>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Access Code</span>
+                            </label>
+                            <input type="text" name="access_code" placeholder="e.g., KID001" 
+                                   class="input input-bordered" required>
+                            <label class="label">
+                                <span class="label-text-alt">Must be unique for each student</span>
+                            </label>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Class Label (Optional)</span>
+                            </label>
+                            <input type="text" name="class_label" placeholder="e.g., Beginners Group A" 
+                                   class="input input-bordered">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-full">
+                            ➕ Add Student
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Existing Students -->
+            <div class="card bg-white shadow-lg">
+                <div class="card-body">
+                    <h2 class="card-title text-2xl mb-4">📋 All Students ({{ students|length }})</h2>
+                    
+                    <div class="overflow-x-auto max-h-96">
+                        <table class="table table-compact">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Age</th>
+                                    <th>Access Code</th>
+                                    <th>Class</th>
+                                    <th>Joined</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for student in students %}
+                                <tr>
+                                    <td class="font-medium">{{ student.first_name }}</td>
+                                    <td>{{ student.age or 'N/A' }}</td>
+                                    <td>
+                                        <code class="bg-base-200 px-2 py-1 rounded">{{ student.access_code }}</code>
+                                    </td>
+                                    <td>{{ student.class_label or '-' }}</td>
+                                    <td>{{ student.created_at.strftime('%Y-%m-%d') }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    {% if not students %}
+                    <div class="text-center py-8 text-gray-500">
+                        <div class="text-4xl mb-2">👥</div>
+                        <p>No students registered yet. Add your first student!</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Bulk Actions -->
+        <div class="card bg-white shadow-lg mt-8">
+            <div class="card-body">
+                <h2 class="card-title text-2xl mb-4">⚡ Bulk Actions</h2>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <a href="/admin/assessments.csv" class="btn btn-accent btn-lg">
+                        <div class="text-center">
+                            <div class="text-2xl">📊</div>
+                            <span>Export All Data</span>
+                        </div>
+                    </a>
+                    <button class="btn btn-info btn-lg" onclick="generateCodes()">
+                        <div class="text-center">
+                            <div class="text-2xl">🎫</div>
+                            <span>Generate Codes</span>
+                        </div>
+                    </button>
+                    <div class="btn btn-warning btn-lg" onclick="showStudentStats()">
+                        <div class="text-center">
+                            <div class="text-2xl">📈</div>
+                            <span>View Statistics</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function generateCodes() {
+            alert('Feature coming soon: Bulk generate unique access codes for multiple students');
+        }
+        
+        function showStudentStats() {
+            alert('Feature coming soon: View detailed student progress statistics');
+        }
+    </script>
+</body>
+</html>

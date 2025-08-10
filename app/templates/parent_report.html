@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="space-y-8">
+    <!-- Header Section -->
+    <div class="hero bg-gradient-to-r from-kid-green to-kid-blue rounded-3xl text-white p-8">
+        <div class="hero-content text-center">
+            <div>
+                <h1 class="text-4xl font-bold mb-4">📊 {{ student.first_name }}'s Progress Report</h1>
+                <p class="text-xl">Track your child's learning journey</p>
+                <div class="mt-6">
+                    <a href="/parent/report.pdf" class="btn btn-lg bg-white text-kid-blue hover:bg-gray-100 border-0 font-semibold">
+                        📄 Download PDF Report
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Overview -->
+    <div class="grid md:grid-cols-4 gap-6">
+        <div class="stat bg-white rounded-2xl shadow-lg border-l-8 border-kid-blue">
+            <div class="stat-figure text-kid-blue">
+                <div class="text-4xl">📚</div>
+            </div>
+            <div class="stat-title text-gray-600">Modules Completed</div>
+            <div class="stat-value text-kid-blue">{{ completed_modules }}</div>
+            <div class="stat-desc">out of {{ total_modules }}</div>
+        </div>
+
+        <div class="stat bg-white rounded-2xl shadow-lg border-l-8 border-kid-yellow">
+            <div class="stat-figure text-kid-yellow">
+                <div class="text-4xl">⭐</div>
+            </div>
+            <div class="stat-title text-gray-600">Total Stars</div>
+            <div class="stat-value text-kid-yellow">{{ total_stars }}</div>
+            <div class="stat-desc">Great achievement!</div>
+        </div>
+
+        <div class="stat bg-white rounded-2xl shadow-lg border-l-8 border-kid-green">
+            <div class="stat-figure text-kid-green">
+                <div class="text-4xl">📈</div>
+            </div>
+            <div class="stat-title text-gray-600">Overall Progress</div>
+            <div class="stat-value text-kid-green">{{ progress_percentage }}%</div>
+            <div class="stat-desc">Course completion</div>
+        </div>
+
+        <div class="stat bg-white rounded-2xl shadow-lg border-l-8 border-kid-purple">
+            <div class="stat-figure text-kid-purple">
+                <div class="text-4xl">🧪</div>
+            </div>
+            <div class="stat-title text-gray-600">Latest Assessment</div>
+            <div class="stat-value text-kid-purple text-lg">
+                {% if latest_assessment %}
+                {{ latest_assessment.level }}
+                {% else %}
+                Not taken
+                {% endif %}
+            </div>
+            <div class="stat-desc">
+                {% if latest_assessment %}
+                Score: {{ latest_assessment.raw_score }}/100
+                {% else %}
+                Encourage assessment!
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="card bg-white shadow-xl">
+        <div class="card-body">
+            <h2 class="card-title text-2xl text-kid-blue mb-4">📊 Learning Progress</h2>
+            <div class="w-full bg-gray-200 rounded-full h-6 mb-4">
+                <div class="bg-gradient-to-r from-kid-green to-kid-blue h-6 rounded-full transition-all duration-500" 
+                     style="width: {{ progress_percentage }}%"></div>
+            </div>
+            <p class="text-lg text-center">{{ completed_modules }} of {{ total_modules }} modules completed ({{ progress_percentage }}%)</p>
+        </div>
+    </div>
+
+    <!-- Assessment Details -->
+    {% if latest_assessment %}
+    <div class="card bg-white shadow-xl">
+        <div class="card-body">
+            <h2 class="card-title text-2xl text-kid-purple mb-4">🧪 Latest Assessment Results</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center p-3 bg-kid-purple/10 rounded-lg">
+                            <span class="font-semibold">Achievement Level:</span>
+                            <span class="badge badge-lg bg-kid-purple text-white">{{ latest_assessment.level }}</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-kid-blue/10 rounded-lg">
+                            <span class="font-semibold">Overall Score:</span>
+                            <span class="text-2xl font-bold text-kid-blue">{{ latest_assessment.raw_score }}/100</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-kid-green/10 rounded-lg">
+                            <span class="font-semibold">Completed On:</span>
+                            <span class="text-kid-green font-semibold">{{ latest_assessment.completed_at.strftime('%B %d, %Y') }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if domain_breakdown %}
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Domain Strengths:</h3>
+                    <div class="space-y-3">
+                        {% for domain, score in domain_breakdown.items() %}
+                        <div class="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
+                            <span class="capitalize font-medium">{{ domain }}:</span>
+                            <span class="font-bold text-kid-blue">{{ score }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Module Progress -->
+    <div class="card bg-white shadow-xl">
+        <div class="card-body">
+            <h2 class="card-title text-2xl text-kid-blue mb-6">📚 Module-by-Module Progress</h2>
+            
+            <div class="space-y-4">
+                {% for module in modules %}
+                <div class="border-2 border-gray-200 rounded-xl p-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-kid-blue to-kid-purple rounded-xl flex items-center justify-center text-white text-lg font-bold">
+                                {{ module.week_no }}
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold">{{ module.title }}</h3>
+                                <p class="text-gray-600">Week {{ module.week_no }} Module</p>
+                            </div>
+                        </div>
+                        
+                        <div class="text-right">
+                            {% set progress = progress_data.get(module.id) %}
+                            {% if progress %}
+                                {% if progress.status.value == 'DONE' %}
+                                    <span class="badge badge-success text-lg px-4 py-2">✅ Completed</span>
+                                    <div class="text-kid-yellow font-semibold mt-1">{{ progress.stars }} ⭐ stars earned</div>
+                                {% elif progress.status.value == 'STARTED' %}
+                                    <span class="badge badge-warning text-lg px-4 py-2">🟡 In Progress</span>
+                                {% else %}
+                                    <span class="badge badge-ghost text-lg px-4 py-2">⭕ Not Started</span>
+                                {% endif %}
+                            {% else %}
+                                <span class="badge badge-ghost text-lg px-4 py-2">⭕ Not Started</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="text-center space-y-4">
+        <a href="/parent/report.pdf" class="btn btn-lg bg-kid-blue hover:bg-blue-600 text-white border-0 mr-4">
+            📄 Download Detailed PDF Report
+        </a>
+        <a href="/parent" class="btn btn-outline btn-lg">
+            🔙 Back to Login
+        </a>
+    </div>
+</div>
+{% endblock %}

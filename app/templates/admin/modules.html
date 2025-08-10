@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Modules - CIFIX Kids Hub Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.0/dist/full.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-gray-800">📚 Manage Modules</h1>
+                <div class="space-x-4">
+                    <a href="/admin/dashboard" class="btn btn-outline">← Admin Dashboard</a>
+                    <a href="/" class="btn btn-primary">Main Site</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Add New Module Form -->
+            <div class="card bg-white shadow-lg">
+                <div class="card-body">
+                    <h2 class="card-title text-2xl mb-4">➕ Add New Module</h2>
+                    
+                    <form method="post" class="space-y-4">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Module Title</span>
+                            </label>
+                            <input type="text" name="title" placeholder="e.g., Introduction to Python" 
+                                   class="input input-bordered" required>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Week Number</span>
+                            </label>
+                            <input type="number" name="week_no" placeholder="1" min="1" 
+                                   class="input input-bordered" required>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Video URL</span>
+                            </label>
+                            <input type="url" name="video_url" placeholder="https://youtube.com/..." 
+                                   class="input input-bordered">
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Resource URL</span>
+                            </label>
+                            <input type="url" name="resource_url" placeholder="https://..." 
+                                   class="input input-bordered">
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Live Class URL</span>
+                            </label>
+                            <input type="url" name="meet_url" placeholder="https://zoom.us/..." 
+                                   class="input input-bordered">
+                        </div>
+
+                        <div class="form-control">
+                            <label class="cursor-pointer label">
+                                <span class="label-text font-semibold">Publish Module</span>
+                                <input type="checkbox" name="is_published" class="checkbox checkbox-primary" />
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-full">
+                            ➕ Add Module
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Existing Modules -->
+            <div class="card bg-white shadow-lg">
+                <div class="card-body">
+                    <h2 class="card-title text-2xl mb-4">📋 Existing Modules</h2>
+                    
+                    <div class="space-y-4 max-h-96 overflow-y-auto">
+                        {% for module in modules %}
+                        <div class="card bg-base-200 shadow">
+                            <div class="card-body p-4">
+                                <div class="flex justify-between items-start">
+                                    <div class="flex-1">
+                                        <h3 class="font-bold text-lg">Week {{ module.week_no }}: {{ module.title }}</h3>
+                                        <div class="text-sm text-gray-600 mt-2 space-y-1">
+                                            {% if module.video_url %}
+                                                <div>🎬 Video: <a href="{{ module.video_url }}" target="_blank" class="link">View</a></div>
+                                            {% endif %}
+                                            {% if module.resource_url %}
+                                                <div>📄 Resources: <a href="{{ module.resource_url }}" target="_blank" class="link">View</a></div>
+                                            {% endif %}
+                                            {% if module.meet_url %}
+                                                <div>🎓 Live Class: <a href="{{ module.meet_url }}" target="_blank" class="link">Join</a></div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col items-end space-y-2">
+                                        {% if module.is_published %}
+                                            <span class="badge badge-success">✅ Published</span>
+                                        {% else %}
+                                            <span class="badge badge-warning">📝 Draft</span>
+                                        {% endif %}
+                                        <div class="text-xs text-gray-500">
+                                            Created: {{ module.created_at.strftime('%Y-%m-%d') }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    {% if not modules %}
+                    <div class="text-center py-8 text-gray-500">
+                        <div class="text-4xl mb-2">📝</div>
+                        <p>No modules created yet. Add your first module!</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

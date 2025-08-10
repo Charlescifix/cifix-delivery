@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="py-20">
+    <div class="max-w-lg mx-auto px-4">
+        <div class="modern-card">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
+                        <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
+                    </svg>
+                </div>
+                <h1 class="title-secondary mb-4">Join Cifix Learn!</h1>
+                <p class="text-gray-600 text-lg">Create your account and start your epic learning journey!</p>
+            </div>
+
+            {% if error %}
+            <div class="alert-error mb-6">
+                <div class="flex items-center gap-2">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    {{ error }}
+                </div>
+            </div>
+            {% endif %}
+
+            <form method="post" class="space-y-6">
+                <div>
+                    <label class="modern-label">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="inline mr-2">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                        What's your first name?
+                    </label>
+                    <input type="text" name="first_name" placeholder="Enter your awesome name!" 
+                           class="modern-input" required>
+                </div>
+
+                <div>
+                    <label class="modern-label">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="inline mr-2">
+                            <path d="M9,12A3,3 0 0,0 12,9A3,3 0 0,0 15,12A3,3 0 0,0 12,15A3,3 0 0,0 9,12M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>
+                        </svg>
+                        How old are you?
+                    </label>
+                    <select name="age" class="modern-input" required>
+                        <option disabled selected>Choose your age</option>
+                        {% for age in range(5, 18) %}
+                        <option value="{{ age }}">{{ age }} years old</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label class="modern-label">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="inline mr-2">
+                            <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z" />
+                        </svg>
+                        Parent's Email Address
+                    </label>
+                    <input type="email" name="parent_email" placeholder="parent@example.com" 
+                           class="modern-input" required>
+                    <p class="text-sm text-gray-500 mt-2">We'll send your access code to your parent</p>
+                </div>
+
+                <button type="submit" class="modern-btn-success w-full">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
+                    </svg>
+                    Create My Account!
+                </button>
+            </form>
+
+            <div class="flex items-center my-8">
+                <div class="h-px bg-gray-300 flex-grow"></div>
+                <span class="px-4 text-gray-500 font-medium">Already have an account?</span>
+                <div class="h-px bg-gray-300 flex-grow"></div>
+            </div>
+
+            <div class="text-center space-y-4">
+                <a href="/login" class="modern-btn-secondary w-full">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1M10 17L6 13L7.41 11.59L10 14.17L16.59 7.58L18 9L10 17Z" />
+                    </svg>
+                    Sign In Instead
+                </a>
+                
+                <a href="/" class="text-gray-500 hover:text-gray-700 font-medium transition-colors inline-flex items-center gap-2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+                    </svg>
+                    Back to Home
+                </a>
+            </div>
+
+            <!-- Enhanced Info Box -->
+            <div class="modern-card bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 mt-8">
+                <h4 class="font-bold text-gray-800 text-xl mb-4 flex items-center gap-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="text-blue-600">
+                        <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M11,16.5L6.5,12L7.91,10.59L11,13.67L16.59,8.09L18,9.5L11,16.5Z"/>
+                    </svg>
+                    What happens next?
+                </h4>
+                <ul class="space-y-3 text-gray-700">
+                    <li class="flex items-center gap-3">
+                        <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                                <path d="M12,1L3,5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1Z" />
+                            </svg>
+                        </div>
+                        <span>You'll get a unique access code!</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                                <path d="M20,8L12,13L4,8V6L12,11L20,6V8Z" />
+                            </svg>
+                        </div>
+                        <span>Your parent will receive login details</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <div class="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                                <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
+                            </svg>
+                        </div>
+                        <span>Start learning immediately!</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <div class="w-6 h-6 bg-yellow-500 rounded-full flex items-center justify-center">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                                <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" />
+                            </svg>
+                        </div>
+                        <span>Earn stars as you complete lessons</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

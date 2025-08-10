@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="py-20">
+    <div class="max-w-md mx-auto px-4">
+        <div class="modern-card text-center">
+            <div class="mb-8">
+                <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
+                        <path d="M16,4C18.11,4 19.8,5.69 19.8,7.8C19.8,8.81 19.39,9.67 18.75,10.27C20.58,10.61 22,12.66 22,15V18H2V15C2,12.66 3.42,10.61 5.25,10.27C4.61,9.67 4.2,8.81 4.2,7.8C4.2,5.69 5.89,4 8,4C10.11,4 11.8,5.69 11.8,7.8C11.8,8.81 11.39,9.67 10.75,10.27C12.58,10.61 14,12.66 14,15V18H12V20H10V18H8V20H6V18H4V20H2V22H22V20H20V18H18V20H16V18H14V15C14,12.66 12.58,10.61 10.75,10.27C11.39,9.67 11.8,8.81 11.8,7.8C11.8,5.69 10.11,4 8,4M16,6A1.8,1.8 0 0,0 14.2,7.8A1.8,1.8 0 0,0 16,9.6A1.8,1.8 0 0,0 17.8,7.8A1.8,1.8 0 0,0 16,6M8,6A1.8,1.8 0 0,0 6.2,7.8A1.8,1.8 0 0,0 8,9.6A1.8,1.8 0 0,0 9.8,7.8A1.8,1.8 0 0,0 8,6Z"/>
+                    </svg>
+                </div>
+                <h1 class="title-secondary mb-4">Parent Access</h1>
+                <p class="text-gray-600 text-lg">View your child's learning progress and achievements</p>
+            </div>
+
+            {% if error %}
+            <div class="alert-error mb-6">
+                <div class="flex items-center gap-2">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    {{ error }}
+                </div>
+            </div>
+            {% endif %}
+
+            <form method="post" class="space-y-6">
+                <div>
+                    <label class="modern-label">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="inline mr-2">
+                            <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z" />
+                        </svg>
+                        Parent Email Address
+                    </label>
+                    <input type="email" name="parent_email" placeholder="your.email@example.com" 
+                           class="modern-input" required>
+                </div>
+
+                <div>
+                    <label class="modern-label">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="inline mr-2">
+                            <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                        </svg>
+                        Child's Access Code
+                    </label>
+                    <input type="text" name="access_code" placeholder="Enter your child's access code" 
+                           class="modern-input" required>
+                </div>
+
+                <button type="submit" class="modern-btn-success w-full">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3,3H21C21.53,3 22,3.47 22,4V20C22,20.53 21.53,21 21,21H3C2.47,21 2,20.53 2,20V4C2,3.47 2.47,3 3,3M12,6A3,3 0 0,0 9,9A3,3 0 0,0 12,12A3,3 0 0,0 15,9A3,3 0 0,0 12,6M9,15C7.67,15 6,15.33 6,16.67V18H18V16.67C18,15.33 16.33,15 15,15H9Z"/>
+                    </svg>
+                    View Progress Report
+                </button>
+            </form>
+
+            <div class="flex items-center my-8">
+                <div class="h-px bg-gray-300 flex-grow"></div>
+                <span class="px-4 text-gray-500 font-medium">OR</span>
+                <div class="h-px bg-gray-300 flex-grow"></div>
+            </div>
+
+            <div class="text-center">
+                <a href="/" class="modern-btn-secondary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+                    </svg>
+                    Back to Home
+                </a>
+            </div>
+
+            <!-- Information Box -->
+            <div class="modern-card bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 mt-8">
+                <h4 class="font-bold text-gray-800 text-lg mb-4 flex items-center gap-2">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-green-600">
+                        <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M11,16.5L6.5,12L7.91,10.59L11,13.67L16.59,8.09L18,9.5L11,16.5Z"/>
+                    </svg>
+                    Parent Dashboard Features
+                </h4>
+                <ul class="space-y-2 text-gray-700 text-sm">
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <span>Track learning progress and achievements</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        <span>View assessment scores and feedback</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                        <span>Monitor time spent learning</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
+                        <span>Get detailed progress reports</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

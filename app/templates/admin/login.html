@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - CIFIX Kids Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.0/dist/full.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="card bg-white shadow-2xl w-full max-w-md">
+        <div class="card-body">
+            <div class="text-center mb-6">
+                <h2 class="text-3xl font-bold text-gray-800">🔐 Admin Login</h2>
+                <p class="text-gray-600 mt-2">CIFIX Kids Hub Administration</p>
+            </div>
+
+            {% if error %}
+            <div class="alert alert-error mb-6">
+                <span>❌ {{ error }}</span>
+            </div>
+            {% endif %}
+
+            <form method="post" class="space-y-6">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text font-semibold">Admin Password</span>
+                    </label>
+                    <input type="password" name="password" placeholder="Enter admin password" 
+                           class="input input-bordered input-lg" required>
+                </div>
+
+                <button type="submit" class="btn btn-lg w-full btn-primary">
+                    🚀 Access Admin Panel
+                </button>
+            </form>
+
+            <div class="divider">OR</div>
+
+            <div class="text-center">
+                <a href="/" class="btn btn-outline">
+                    ← Back to Main Site
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

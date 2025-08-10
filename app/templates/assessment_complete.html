@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* Dark comfortable theme for assessment results */
+    body {
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%) !important;
+    }
+    
+    .assessment-card {
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(20px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        color: #f1f5f9 !important;
+    }
+    
+    .assessment-text {
+        color: #e2e8f0 !important;
+    }
+    
+    .assessment-title {
+        color: #f1f5f9 !important;
+    }
+</style>
+
+<div class="py-20">
+    <div class="max-w-3xl mx-auto px-4">
+        <div class="assessment-card rounded-xl p-8 text-center">
+            <div class="mb-8">
+                <div class="w-24 h-24 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+                        <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M11,16.5L6.5,12L7.91,10.59L11,13.67L16.59,8.09L18,9.5L11,16.5Z"/>
+                    </svg>
+                </div>
+                <h1 class="assessment-title text-3xl font-bold mb-4">Assessment Complete!</h1>
+                <p class="assessment-text text-xl">Great job, {{ student.first_name }}! Your assessment has been submitted.</p>
+            </div>
+
+            {% if assessment %}
+            <!-- Assessment Results Summary -->
+            <div class="assessment-card bg-gradient-to-br from-indigo-500/20 to-purple-600/20 border-indigo-400/30 mb-8 p-6">
+                <h2 class="assessment-title text-2xl font-bold mb-6 flex items-center justify-center gap-3">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="#60a5fa">
+                        <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
+                    </svg>
+                    Your Results
+                </h2>
+                
+                <div class="grid md:grid-cols-3 gap-4 mb-6">
+                    <div class="assessment-card bg-blue-500/20 p-4 rounded-lg text-center">
+                        <div class="text-blue-400 text-3xl font-bold mb-2">{{ assessment.raw_score }}/100</div>
+                        <div class="assessment-text text-sm">Overall Score</div>
+                    </div>
+                    
+                    <div class="assessment-card bg-purple-500/20 p-4 rounded-lg text-center">
+                        <div class="text-purple-400 text-2xl font-bold mb-2">{{ assessment.level }}</div>
+                        <div class="assessment-text text-sm">Skill Level</div>
+                    </div>
+                    
+                    <div class="assessment-card bg-yellow-500/20 p-4 rounded-lg text-center">
+                        <div class="flex items-center justify-center gap-1 mb-2">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fbbf24">
+                                <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" />
+                            </svg>
+                            <div class="text-yellow-400 text-2xl font-bold">+{{ assessment.stars_earned }}</div>
+                        </div>
+                        <div class="assessment-text text-sm">Stars Earned</div>
+                    </div>
+                </div>
+
+                {% if assessment.domain_breakdown %}
+                {% set domains = assessment.domain_breakdown | from_json %}
+                {% if domains %}
+                <div class="assessment-text text-left">
+                    <h3 class="font-bold mb-3">Skill Breakdown:</h3>
+                    <div class="grid gap-2">
+                        {% for domain, score in domains.items() %}
+                        <div class="flex justify-between items-center p-2 bg-white/5 rounded">
+                            <span class="capitalize">{{ domain.replace('_', ' ') }}</span>
+                            <span class="font-bold text-blue-400">{{ score }}%</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
+            {% else %}
+            <!-- No Results Yet -->
+            <div class="assessment-card bg-yellow-500/20 border-yellow-400/30 mb-8 p-6">
+                <div class="w-16 h-16 bg-yellow-500/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="#fbbf24">
+                        <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,6A1,1 0 0,0 11,7V13A1,1 0 0,0 12,14A1,1 0 0,0 13,13V7A1,1 0 0,0 12,6M12,17A1,1 0 0,0 11,18A1,1 0 0,0 12,19A1,1 0 0,0 13,18A1,1 0 0,0 12,17Z"/>
+                    </svg>
+                </div>
+                <h3 class="text-yellow-400 text-xl font-bold mb-2">Processing Results</h3>
+                <p class="assessment-text">Your results are being processed and will be available soon. Please check your dashboard in a few minutes.</p>
+            </div>
+            {% endif %}
+
+            <!-- Action Buttons -->
+            <div class="space-y-4">
+                <a href="/dashboard" class="modern-btn-success w-full text-lg">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" />
+                    </svg>
+                    Return to Dashboard
+                </a>
+                
+                <div class="flex gap-4">
+                    <a href="/assessment/results" class="modern-btn-secondary flex-1">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3,3H21C21.53,3 22,3.47 22,4V20C22,20.53 21.53,21 21,21H3C2.47,21 2,20.53 2,20V4C2,3.47 2.47,3 3,3M12,6A3,3 0 0,0 9,9A3,3 0 0,0 12,12A3,3 0 0,0 15,9A3,3 0 0,0 12,6M9,15C7.67,15 6,15.33 6,16.67V18H18V16.67C18,15.33 16.33,15 15,15H9Z"/>
+                        </svg>
+                        View All Results
+                    </a>
+                    
+                    <a href="/assessment/start" class="modern-btn flex-1">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
+                        </svg>
+                        Take Another Assessment
+                    </a>
+                </div>
+            </div>
+
+            <!-- Tips and Next Steps -->
+            <div class="assessment-card bg-gradient-to-br from-blue-50/10 to-indigo-50/10 border-blue-200/30 mt-8 text-left p-6">
+                <h4 class="font-bold assessment-title mb-4 flex items-center gap-2">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-blue-400">
+                        <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M11,16.5L6.5,12L7.91,10.59L11,13.67L16.59,8.09L18,9.5L11,16.5Z"/>
+                    </svg>
+                    What's Next?
+                </h4>
+                <ul class="space-y-3 assessment-text">
+                    <li class="flex items-start gap-3">
+                        <div class="w-6 h-6 bg-green-500/30 rounded-full flex items-center justify-center mt-0.5">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#10b981">
+                                <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                        <div>
+                            <strong>Continue Learning:</strong> 
+                            <span class="opacity-75">Start or continue your learning modules based on your assessment results.</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <div class="w-6 h-6 bg-blue-500/30 rounded-full flex items-center justify-center mt-0.5">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#3b82f6">
+                                <path d="M16,4C18.11,4 19.8,5.69 19.8,7.8C19.8,8.81 19.39,9.67 18.75,10.27C20.58,10.61 22,12.66 22,15V18H2V15C2,12.66 3.42,10.61 5.25,10.27C4.61,9.67 4.2,8.81 4.2,7.8C4.2,5.69 5.89,4 8,4C10.11,4 11.8,5.69 11.8,7.8C11.8,8.81 11.39,9.67 10.75,10.27C12.58,10.61 14,12.66 14,15V18H12V20H10V18H8V20H6V18H4V20H2V22H22V20H20V18H18V20H16V18H14V15C14,12.66 12.58,10.61 10.75,10.27C11.39,9.67 11.8,8.81 11.8,7.8C11.8,5.69 10.11,4 8,4M16,6A1.8,1.8 0 0,0 14.2,7.8A1.8,1.8 0 0,0 16,9.6A1.8,1.8 0 0,0 17.8,7.8A1.8,1.8 0 0,0 16,6M8,6A1.8,1.8 0 0,0 6.2,7.8A1.8,1.8 0 0,0 8,9.6A1.8,1.8 0 0,0 9.8,7.8A1.8,1.8 0 0,0 8,6Z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <strong>Share with Parents:</strong> 
+                            <span class="opacity-75">Your parents can view your progress and results in their parent portal.</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <div class="w-6 h-6 bg-purple-500/30 rounded-full flex items-center justify-center mt-0.5">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#a855f7">
+                                <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <strong>Track Progress:</strong> 
+                            <span class="opacity-75">Take assessments regularly to track your improvement over time.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
