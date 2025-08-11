@@ -1,0 +1,137 @@
+{
+  "title": "Introduction to Python - Module Assessment",
+  "description": "Test your understanding of Python basics!",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is Python?",
+      "options": [
+        "A type of snake only",
+        "A programming language that lets us give instructions to computers",
+        "A math problem",
+        "A video game"
+      ],
+      "correct_answer": 1,
+      "explanation": "Python is a programming language that helps us communicate with computers!"
+    },
+    {
+      "id": 2,
+      "question": "What do we use variables for in Python?",
+      "options": [
+        "To make the computer slower",
+        "To store and remember information",
+        "To break the program",
+        "To change colors"
+      ],
+      "correct_answer": 1,
+      "explanation": "Variables are like boxes that store information we want to use later!"
+    },
+    {
+      "id": 3,
+      "question": "Which of these is the correct way to store your name in a variable?",
+      "options": [
+        "name = 'Alex'",
+        "name + Alex",
+        "Alex = name",
+        "print Alex"
+      ],
+      "correct_answer": 0,
+      "explanation": "We use the = sign to store information in a variable!"
+    },
+    {
+      "id": 4,
+      "question": "What does the print() function do?",
+      "options": [
+        "Prints on paper",
+        "Makes noise",
+        "Shows information on the screen",
+        "Deletes everything"
+      ],
+      "correct_answer": 2,
+      "explanation": "print() shows information on the computer screen so we can see it!"
+    },
+    {
+      "id": 5,
+      "question": "What type of information is 'Hello World'?",
+      "options": [
+        "A number",
+        "Text (string)",
+        "True or False",
+        "A mistake"
+      ],
+      "correct_answer": 1,
+      "explanation": "Text surrounded by quotes is called a string in Python!"
+    },
+    {
+      "id": 6,
+      "question": "What type of information is the number 25?",
+      "options": [
+        "Text",
+        "A number (integer)",
+        "True or False",
+        "A color"
+      ],
+      "correct_answer": 1,
+      "explanation": "25 is a whole number, which we call an integer in Python!"
+    },
+    {
+      "id": 7,
+      "question": "What will this code show: print('I am ' + '8 years old')?",
+      "options": [
+        "I am 8 years old",
+        "I am + 8 years old", 
+        "Nothing",
+        "An error"
+      ],
+      "correct_answer": 0,
+      "explanation": "The + sign combines (concatenates) text together!"
+    },
+    {
+      "id": 8,
+      "question": "What will this code show: print(5 + 3)?",
+      "options": [
+        "5 + 3",
+        "8",
+        "53",
+        "Nothing"
+      ],
+      "correct_answer": 1,
+      "explanation": "Python can do math! 5 + 3 = 8"
+    },
+    {
+      "id": 9,
+      "question": "Which symbol do we use to store information in a variable?",
+      "options": [
+        "+",
+        "-",
+        "=",
+        "*"
+      ],
+      "correct_answer": 2,
+      "explanation": "The = symbol assigns (stores) values into variables!"
+    },
+    {
+      "id": 10,
+      "question": "What makes Python special for beginners?",
+      "options": [
+        "It's very difficult",
+        "It looks like English and is easy to read",
+        "It only works on old computers",
+        "You can't make mistakes"
+      ],
+      "correct_answer": 1,
+      "explanation": "Python is designed to be readable and friendly for beginners!"
+    }
+  ],
+  "scoring": {
+    "total_points": 10,
+    "passing_score": 7,
+    "star_rewards": {
+      "10": 5,
+      "8-9": 4, 
+      "6-7": 3,
+      "4-5": 2,
+      "0-3": 1
+    }
+  }
+}

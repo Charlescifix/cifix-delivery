@@ -18,3 +18,4 @@ class Module(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
     
     progress: Mapped[List["EnrollmentProgress"]] = relationship(back_populates="module")
+    module_assessment: Mapped["ModuleAssessment"] = relationship(back_populates="module", uselist=False)

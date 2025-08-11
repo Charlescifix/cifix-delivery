@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from contextlib import asynccontextmanager
 
-from .routes import public, student, parent, admin, assessment
+from .routes import public, student, parent, admin, assessment, module_assessment
 from .models import engine, Base
 from .templates_config import templates
 
@@ -37,6 +37,7 @@ app.include_router(student.router, tags=["Student"])
 app.include_router(parent.router, tags=["Parent"])
 app.include_router(admin.router, tags=["Admin"])
 app.include_router(assessment.router, tags=["Assessment"])
+app.include_router(module_assessment.router, tags=["Module Assessment"])
 
 @app.get("/health")
 async def health_check():

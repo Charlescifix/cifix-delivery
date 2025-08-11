@@ -19,3 +19,4 @@ class Student(Base):
     progress: Mapped[List["EnrollmentProgress"]] = relationship(back_populates="student")
     assessments: Mapped[List["AssessmentResult"]] = relationship(back_populates="student")
     badges: Mapped[List["StudentBadge"]] = relationship(back_populates="student")
+    module_attempts: Mapped[List["ModuleAssessmentAttempt"]] = relationship(back_populates="student")
