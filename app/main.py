@@ -10,9 +10,15 @@ from .templates_config import templates
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Create database tables
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    try:
+        # Create database tables
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+        print("✅ Database tables created successfully")
+    except Exception as e:
+        print(f"❌ Database connection failed: {e}")
+        print("Make sure PostgreSQL service is added in Railway dashboard")
+        # Don't fail startup - let the app run and show error pages
     yield
 
 app = FastAPI(
@@ -34,7 +40,22 @@ app.include_router(assessment.router, tags=["Assessment"])
 
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy", "message": "CIFIX Kids Hub is running!"}
+    try:
+        # Test database connection
+        async with engine.begin() as conn:
+            await conn.execute("SELECT 1")
+        return {
+            "status": "healthy", 
+            "message": "CIFIX Kids Hub is running!",
+            "database": "connected"
+        }
+    except Exception as e:
+        return {
+            "status": "degraded",
+            "message": "CIFIX Kids Hub is running but database is unavailable",
+            "database": "disconnected",
+            "error": str(e)
+        }
 
 if __name__ == "__main__":
     import uvicorn
