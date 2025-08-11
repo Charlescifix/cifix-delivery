@@ -108,8 +108,8 @@ async def register_student(
     if not errors:
         email_stmt = select(Student).where(Student.parent_email == parent_email)
         email_result = await db.execute(email_stmt)
-        existing_email = email_result.scalar_one_or_none()
-        if existing_email:
+        existing_emails = email_result.scalars().all()
+        if existing_emails:
             errors.append("A student with this parent email is already registered")
     
     # Check for duplicate name + age combination (same child)
@@ -119,8 +119,8 @@ async def register_student(
             Student.age == age
         )
         name_age_result = await db.execute(name_age_stmt)
-        existing_student = name_age_result.scalar_one_or_none()
-        if existing_student:
+        existing_students = name_age_result.scalars().all()
+        if existing_students:
             errors.append("A student with this name and age is already registered")
     
     # If validation errors, return with errors
