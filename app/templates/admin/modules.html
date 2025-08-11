@@ -1,136 +1,240 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Modules - CIFIX Kids Hub Admin</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.0/dist/full.min.css" rel="stylesheet" />
-</head>
-<body class="bg-gray-50">
-    <nav class="bg-white shadow-lg">
-        <div class="max-w-6xl mx-auto px-4 py-3">
+{% extends "base.html" %}
+
+{% block content %}
+<div class="py-8">
+    <div class="max-w-7xl mx-auto px-4">
+        <!-- Header -->
+        <div class="modern-card mb-8">
             <div class="flex justify-between items-center">
-                <h1 class="text-2xl font-bold text-gray-800">📚 Manage Modules</h1>
-                <div class="space-x-4">
-                    <a href="/admin/dashboard" class="btn btn-outline">← Admin Dashboard</a>
-                    <a href="/" class="btn btn-primary">Main Site</a>
+                <div>
+                    <h1 class="title-secondary mb-2 flex items-center gap-3">
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                                <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
+                            </svg>
+                        </div>
+                        Manage Modules
+                    </h1>
+                    <p class="text-gray-600 text-lg">Create and manage learning modules</p>
+                </div>
+                <div class="flex gap-3">
+                    <a href="/admin/dashboard" class="modern-btn-secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+                        </svg>
+                        Admin Dashboard
+                    </a>
+                    <a href="/logout" class="modern-btn-danger">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M16,17V14H9V10H16V7L21,12L16,17M14,2A2,2 0 0,1 16,4V6H14V4H5V20H14V18H16V20A2,2 0 0,1 14,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2H14Z" />
+                        </svg>
+                        Logout
+                    </a>
+                    <a href="/" class="modern-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10,20V14H14V20V21H10V20M12,1L21,5V11C21,16.55 17.16,21.74 12,23C6.84,21.74 3,16.55 3,11V5L12,1Z" />
+                        </svg>
+                        Main Site
+                    </a>
                 </div>
             </div>
         </div>
-    </nav>
 
-    <main class="max-w-6xl mx-auto px-4 py-8">
-        <div class="grid md:grid-cols-2 gap-8">
+        <div class="grid lg:grid-cols-2 gap-8">
             <!-- Add New Module Form -->
-            <div class="card bg-white shadow-lg">
-                <div class="card-body">
-                    <h2 class="card-title text-2xl mb-4">➕ Add New Module</h2>
-                    
-                    <form method="post" class="space-y-4">
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-semibold">Module Title</span>
-                            </label>
-                            <input type="text" name="title" placeholder="e.g., Introduction to Python" 
-                                   class="input input-bordered" required>
-                        </div>
+            <div class="modern-card">
+                <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="text-green-600">
+                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                    </svg>
+                    Add New Module
+                </h2>
+                
+                <form method="post" class="space-y-6">
+                    <div>
+                        <label class="modern-label">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="inline mr-2">
+                                <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
+                            </svg>
+                            Module Title
+                        </label>
+                        <input type="text" name="title" placeholder="e.g., Introduction to Python" 
+                               class="modern-input" required>
+                    </div>
 
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-semibold">Week Number</span>
-                            </label>
-                            <input type="number" name="week_no" placeholder="1" min="1" 
-                                   class="input input-bordered" required>
-                        </div>
+                    <div>
+                        <label class="modern-label">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="inline mr-2">
+                                <path d="M9 11H7v6h2v-6zm4 0h-2v6h2v-6zm4 0h-2v6h2v-6zm2-7H3v2l2 2v11c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V8l2-2V4z"/>
+                            </svg>
+                            Week Number
+                        </label>
+                        <input type="number" name="week_no" placeholder="1" min="1" 
+                               class="modern-input" required>
+                    </div>
 
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-semibold">Video URL</span>
-                            </label>
-                            <input type="url" name="video_url" placeholder="https://youtube.com/..." 
-                                   class="input input-bordered">
-                        </div>
+                    <div>
+                        <label class="modern-label">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="inline mr-2">
+                                <path d="M10 8v8l6-4-6-4zm8-5H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2z"/>
+                            </svg>
+                            Video URL (Optional)
+                        </label>
+                        <input type="url" name="video_url" placeholder="https://youtube.com/..." 
+                               class="modern-input">
+                    </div>
 
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-semibold">Resource URL</span>
-                            </label>
-                            <input type="url" name="resource_url" placeholder="https://..." 
-                                   class="input input-bordered">
-                        </div>
+                    <div>
+                        <label class="modern-label">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="inline mr-2">
+                                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
+                            </svg>
+                            Resource URL (Optional)
+                        </label>
+                        <input type="url" name="resource_url" placeholder="https://..." 
+                               class="modern-input">
+                    </div>
 
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-semibold">Live Class URL</span>
-                            </label>
-                            <input type="url" name="meet_url" placeholder="https://zoom.us/..." 
-                                   class="input input-bordered">
-                        </div>
+                    <div>
+                        <label class="modern-label">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="inline mr-2">
+                                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H9v-4h6v4zm3-6H6V8h12v4z"/>
+                            </svg>
+                            Live Class URL (Optional)
+                        </label>
+                        <input type="url" name="meet_url" placeholder="https://zoom.us/..." 
+                               class="modern-input">
+                    </div>
 
-                        <div class="form-control">
-                            <label class="cursor-pointer label">
-                                <span class="label-text font-semibold">Publish Module</span>
-                                <input type="checkbox" name="is_published" class="checkbox checkbox-primary" />
-                            </label>
-                        </div>
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox" name="is_published" id="is_published" class="w-5 h-5 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2">
+                        <label for="is_published" class="modern-label mb-0 cursor-pointer">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="inline mr-2">
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Publish Module Immediately
+                        </label>
+                    </div>
 
-                        <button type="submit" class="btn btn-primary w-full">
-                            ➕ Add Module
-                        </button>
-                    </form>
-                </div>
+                    <button type="submit" class="modern-btn w-full">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                        </svg>
+                        Add Module
+                    </button>
+                </form>
             </div>
 
             <!-- Existing Modules -->
-            <div class="card bg-white shadow-lg">
-                <div class="card-body">
-                    <h2 class="card-title text-2xl mb-4">📋 Existing Modules</h2>
-                    
-                    <div class="space-y-4 max-h-96 overflow-y-auto">
-                        {% for module in modules %}
-                        <div class="card bg-base-200 shadow">
-                            <div class="card-body p-4">
-                                <div class="flex justify-between items-start">
-                                    <div class="flex-1">
-                                        <h3 class="font-bold text-lg">Week {{ module.week_no }}: {{ module.title }}</h3>
-                                        <div class="text-sm text-gray-600 mt-2 space-y-1">
-                                            {% if module.video_url %}
-                                                <div>🎬 Video: <a href="{{ module.video_url }}" target="_blank" class="link">View</a></div>
-                                            {% endif %}
-                                            {% if module.resource_url %}
-                                                <div>📄 Resources: <a href="{{ module.resource_url }}" target="_blank" class="link">View</a></div>
-                                            {% endif %}
-                                            {% if module.meet_url %}
-                                                <div>🎓 Live Class: <a href="{{ module.meet_url }}" target="_blank" class="link">Join</a></div>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                    <div class="flex flex-col items-end space-y-2">
-                                        {% if module.is_published %}
-                                            <span class="badge badge-success">✅ Published</span>
-                                        {% else %}
-                                            <span class="badge badge-warning">📝 Draft</span>
-                                        {% endif %}
-                                        <div class="text-xs text-gray-500">
-                                            Created: {{ module.created_at.strftime('%Y-%m-%d') }}
-                                        </div>
-                                    </div>
+            <div class="modern-card">
+                <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="text-purple-600">
+                        <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zM4 18v-4h3v-3c0-1.1.9-2 2-2h2c1.1 0 2 .9 2 2v7H4zm9-6.5c0-.83-.67-1.5-1.5-1.5S10 10.67 10 11.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5zM7.5 11.5c0-.83-.67-1.5-1.5-1.5S4.5 10.67 4.5 11.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5z"/>
+                    </svg>
+                    Existing Modules ({{ modules|length }})
+                </h2>
+                
+                <div class="space-y-4 max-h-96 overflow-y-auto">
+                    {% if modules %}
+                    {% for module in modules %}
+                    <div class="bg-gray-50 rounded-lg border p-4 hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="flex-1">
+                                <h3 class="font-bold text-lg text-gray-800 mb-1">Week {{ module.week_no }}: {{ module.title }}</h3>
+                                <div class="text-sm text-gray-500">
+                                    Created: {{ module.created_at.strftime('%Y-%m-%d') }}
                                 </div>
                             </div>
+                            <div>
+                                {% if module.is_published %}
+                                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-semibold flex items-center gap-1">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        Published
+                                    </span>
+                                {% else %}
+                                    <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-semibold flex items-center gap-1">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,12 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z"/>
+                                        </svg>
+                                        Draft
+                                    </span>
+                                {% endif %}
+                            </div>
                         </div>
-                        {% endfor %}
+                        <div class="space-y-2">
+                            {% if module.video_url %}
+                                <div class="flex items-center gap-2 text-sm text-gray-600">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="text-red-500">
+                                        <path d="M10 8v8l6-4-6-4zm8-5H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2z"/>
+                                    </svg>
+                                    <a href="{{ module.video_url }}" target="_blank" class="text-blue-600 hover:underline">Watch Video</a>
+                                </div>
+                            {% endif %}
+                            {% if module.resource_url %}
+                                <div class="flex items-center gap-2 text-sm text-gray-600">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="text-blue-500">
+                                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
+                                    </svg>
+                                    <a href="{{ module.resource_url }}" target="_blank" class="text-blue-600 hover:underline">View Resources</a>
+                                </div>
+                            {% endif %}
+                            {% if module.meet_url %}
+                                <div class="flex items-center gap-2 text-sm text-gray-600">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="text-green-500">
+                                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H9v-4h6v4zm3-6H6V8h12v4z"/>
+                                    </svg>
+                                    <a href="{{ module.meet_url }}" target="_blank" class="text-blue-600 hover:underline">Join Live Class</a>
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
-                    
-                    {% if not modules %}
-                    <div class="text-center py-8 text-gray-500">
-                        <div class="text-4xl mb-2">📝</div>
-                        <p>No modules created yet. Add your first module!</p>
+                    {% endfor %}
+                    {% else %}
+                    <div class="text-center py-12">
+                        <div class="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" class="text-gray-400">
+                                <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
+                            </svg>
+                        </div>
+                        <p class="text-gray-500 text-lg">No modules created yet</p>
+                        <p class="text-gray-400">Add your first module using the form!</p>
                     </div>
                     {% endif %}
                 </div>
             </div>
         </div>
-    </main>
-</body>
-</html>
+
+        <!-- Module Statistics -->
+        {% if modules %}
+        <div class="modern-card mt-8">
+            <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="text-indigo-600">
+                    <path d="M16,6L18.29,8.29L13.41,13.17L9.41,9.17L2,16.59L3.41,18L9.41,12L13.41,16L20.71,8.71L23,11V6H16Z" />
+                </svg>
+                Module Statistics
+            </h2>
+            <div class="grid md:grid-cols-4 gap-4">
+                <div class="text-center p-4 bg-blue-50 rounded-lg border">
+                    <div class="text-2xl font-bold text-blue-600">{{ modules|length }}</div>
+                    <div class="text-sm text-gray-600">Total Modules</div>
+                </div>
+                <div class="text-center p-4 bg-green-50 rounded-lg border">
+                    <div class="text-2xl font-bold text-green-600">{{ modules|selectattr('is_published')|list|length }}</div>
+                    <div class="text-sm text-gray-600">Published</div>
+                </div>
+                <div class="text-center p-4 bg-yellow-50 rounded-lg border">
+                    <div class="text-2xl font-bold text-yellow-600">{{ modules|rejectattr('is_published')|list|length }}</div>
+                    <div class="text-sm text-gray-600">Drafts</div>
+                </div>
+                <div class="text-center p-4 bg-purple-50 rounded-lg border">
+                    <div class="text-2xl font-bold text-purple-600">{{ modules|selectattr('video_url')|list|length }}</div>
+                    <div class="text-sm text-gray-600">With Videos</div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

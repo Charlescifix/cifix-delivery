@@ -1,148 +1,217 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - CIFIX Kids Hub</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.0/dist/full.min.css" rel="stylesheet" />
-</head>
-<body class="bg-gray-50">
-    <nav class="bg-white shadow-lg">
-        <div class="max-w-6xl mx-auto px-4 py-3">
+{% extends "base.html" %}
+
+{% block content %}
+<div class="py-8">
+    <div class="max-w-7xl mx-auto px-4">
+        <!-- Header -->
+        <div class="modern-card mb-8">
             <div class="flex justify-between items-center">
-                <h1 class="text-2xl font-bold text-gray-800">🛠️ Admin Panel</h1>
-                <div class="space-x-4">
-                    <a href="/admin/modules" class="btn btn-outline">Manage Modules</a>
-                    <a href="/admin/students" class="btn btn-outline">Manage Students</a>
-                    <a href="/" class="btn btn-primary">← Main Site</a>
+                <div>
+                    <h1 class="title-secondary mb-2 flex items-center gap-3">
+                        <div class="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                                <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,7H14V9H10V7M10,11H14V13H10V11M10,15H14V17H10V15Z" />
+                            </svg>
+                        </div>
+                        Admin Dashboard
+                    </h1>
+                    <p class="text-gray-600 text-lg">Cifix Learn Administration Panel</p>
+                </div>
+                <div class="flex gap-3">
+                    <a href="/admin/modules" class="modern-btn-secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
+                        </svg>
+                        Manage Modules
+                    </a>
+                    <a href="/admin/students" class="modern-btn-secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                        Manage Students
+                    </a>
+                    <a href="/logout" class="modern-btn-danger">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M16,17V14H9V10H16V7L21,12L16,17M14,2A2,2 0 0,1 16,4V6H14V4H5V20H14V18H16V20A2,2 0 0,1 14,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2H14Z" />
+                        </svg>
+                        Logout
+                    </a>
+                    <a href="/" class="modern-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+                        </svg>
+                        Main Site
+                    </a>
                 </div>
             </div>
         </div>
-    </nav>
 
-    <main class="max-w-6xl mx-auto px-4 py-8">
         <!-- Stats Overview -->
         <div class="grid md:grid-cols-3 gap-6 mb-8">
-            <div class="stat bg-white rounded-lg shadow-lg">
-                <div class="stat-figure text-primary">
-                    <div class="text-3xl">👥</div>
+            <div class="modern-card text-center">
+                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
                 </div>
-                <div class="stat-title">Total Students</div>
-                <div class="stat-value text-primary">{{ students_count }}</div>
-                <div class="stat-desc">Registered learners</div>
+                <h3 class="text-3xl font-bold text-blue-600 mb-2">{{ students_count }}</h3>
+                <p class="text-gray-600 font-semibold">Total Students</p>
+                <p class="text-sm text-gray-500">Registered learners</p>
             </div>
 
-            <div class="stat bg-white rounded-lg shadow-lg">
-                <div class="stat-figure text-secondary">
-                    <div class="text-3xl">📚</div>
+            <div class="modern-card text-center">
+                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+                        <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
+                    </svg>
                 </div>
-                <div class="stat-title">Total Modules</div>
-                <div class="stat-value text-secondary">{{ modules_count }}</div>
-                <div class="stat-desc">Learning modules</div>
+                <h3 class="text-3xl font-bold text-purple-600 mb-2">{{ modules_count }}</h3>
+                <p class="text-gray-600 font-semibold">Total Modules</p>
+                <p class="text-sm text-gray-500">Learning modules</p>
             </div>
 
-            <div class="stat bg-white rounded-lg shadow-lg">
-                <div class="stat-figure text-accent">
-                    <div class="text-3xl">🧪</div>
+            <div class="modern-card text-center">
+                <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+                        <path d="M16,6L18.29,8.29L13.41,13.17L9.41,9.17L2,16.59L3.41,18L9.41,12L13.41,16L20.71,8.71L23,11V6H16Z" />
+                    </svg>
                 </div>
-                <div class="stat-title">Assessments Taken</div>
-                <div class="stat-value text-accent">{{ assessments_count }}</div>
-                <div class="stat-desc">Total completions</div>
+                <h3 class="text-3xl font-bold text-green-600 mb-2">{{ assessments_count }}</h3>
+                <p class="text-gray-600 font-semibold">Assessments Taken</p>
+                <p class="text-sm text-gray-500">Total completions</p>
             </div>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-8">
+        <div class="grid lg:grid-cols-2 gap-8">
             <!-- Recent Students -->
-            <div class="card bg-white shadow-lg">
-                <div class="card-body">
-                    <h2 class="card-title text-2xl mb-4">👥 Recent Students</h2>
-                    <div class="overflow-x-auto">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Access Code</th>
-                                    <th>Joined</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for student in recent_students %}
-                                <tr>
-                                    <td>{{ student.first_name }}</td>
-                                    <td>{{ student.access_code }}</td>
-                                    <td>{{ student.created_at.strftime('%Y-%m-%d') }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="card-actions justify-end">
-                        <a href="/admin/students" class="btn btn-primary">View All Students</a>
-                    </div>
+            <div class="modern-card">
+                <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="text-blue-600">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                    Recent Students
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-200">
+                                <th class="text-left py-3 px-2 font-semibold text-gray-700">Name</th>
+                                <th class="text-left py-3 px-2 font-semibold text-gray-700">Access Code</th>
+                                <th class="text-left py-3 px-2 font-semibold text-gray-700">Joined</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in recent_students %}
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="py-3 px-2 font-medium">{{ student.first_name }}</td>
+                                <td class="py-3 px-2">
+                                    <code class="bg-gray-100 px-2 py-1 rounded text-sm">{{ student.access_code }}</code>
+                                </td>
+                                <td class="py-3 px-2 text-gray-600">{{ student.created_at.strftime('%Y-%m-%d') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-6">
+                    <a href="/admin/students" class="modern-btn w-full">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                        View All Students
+                    </a>
                 </div>
             </div>
 
             <!-- Module Overview -->
-            <div class="card bg-white shadow-lg">
-                <div class="card-body">
-                    <h2 class="card-title text-2xl mb-4">📚 Learning Modules</h2>
-                    <div class="space-y-2">
-                        {% for module in modules %}
-                        <div class="flex justify-between items-center p-3 bg-base-200 rounded-lg">
-                            <div>
-                                <span class="font-semibold">Week {{ module.week_no }}:</span>
-                                {{ module.title }}
-                            </div>
-                            <div>
-                                {% if module.is_published %}
-                                    <span class="badge badge-success">✅ Published</span>
-                                {% else %}
-                                    <span class="badge badge-warning">📝 Draft</span>
-                                {% endif %}
-                            </div>
+            <div class="modern-card">
+                <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="text-purple-600">
+                        <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
+                    </svg>
+                    Learning Modules
+                </h2>
+                <div class="space-y-3 max-h-80 overflow-y-auto">
+                    {% for module in modules %}
+                    <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg border">
+                        <div>
+                            <span class="font-semibold text-gray-800">Week {{ module.week_no }}:</span>
+                            <span class="text-gray-700">{{ module.title }}</span>
                         </div>
-                        {% endfor %}
+                        <div>
+                            {% if module.is_published %}
+                                <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-semibold flex items-center gap-1">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    Published
+                                </span>
+                            {% else %}
+                                <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-semibold flex items-center gap-1">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,12 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z"/>
+                                    </svg>
+                                    Draft
+                                </span>
+                            {% endif %}
+                        </div>
                     </div>
-                    <div class="card-actions justify-end">
-                        <a href="/admin/modules" class="btn btn-primary">Manage Modules</a>
-                    </div>
+                    {% endfor %}
+                </div>
+                <div class="mt-6">
+                    <a href="/admin/modules" class="modern-btn w-full">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
+                        </svg>
+                        Manage Modules
+                    </a>
                 </div>
             </div>
         </div>
 
         <!-- Quick Actions -->
-        <div class="card bg-white shadow-lg mt-8">
-            <div class="card-body">
-                <h2 class="card-title text-2xl mb-4">⚡ Quick Actions</h2>
-                <div class="grid md:grid-cols-4 gap-4">
-                    <a href="/admin/modules" class="btn btn-lg btn-primary">
-                        <div class="text-center">
-                            <div class="text-2xl">📚</div>
-                            <span>Add Module</span>
-                        </div>
-                    </a>
-                    <a href="/admin/students" class="btn btn-lg btn-secondary">
-                        <div class="text-center">
-                            <div class="text-2xl">👥</div>
-                            <span>Add Student</span>
-                        </div>
-                    </a>
-                    <a href="/admin/assessments.csv" class="btn btn-lg btn-accent">
-                        <div class="text-center">
-                            <div class="text-2xl">📊</div>
-                            <span>Export Data</span>
-                        </div>
-                    </a>
-                    <a href="/" class="btn btn-lg btn-outline">
-                        <div class="text-center">
-                            <div class="text-2xl">🏠</div>
-                            <span>Main Site</span>
-                        </div>
-                    </a>
-                </div>
+        <div class="modern-card mt-8">
+            <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="text-indigo-600">
+                    <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                Quick Actions
+            </h2>
+            <div class="grid md:grid-cols-4 gap-4">
+                <a href="/admin/modules" class="modern-btn text-center p-6">
+                    <div class="flex flex-col items-center gap-2">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
+                        </svg>
+                        <span>Add Module</span>
+                    </div>
+                </a>
+                <a href="/admin/students" class="modern-btn-secondary text-center p-6">
+                    <div class="flex flex-col items-center gap-2">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                        <span>Add Student</span>
+                    </div>
+                </a>
+                <a href="/admin/assessments.csv" class="modern-btn-success text-center p-6">
+                    <div class="flex flex-col items-center gap-2">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M16,6L18.29,8.29L13.41,13.17L9.41,9.17L2,16.59L3.41,18L9.41,12L13.41,16L20.71,8.71L23,11V6H16Z" />
+                        </svg>
+                        <span>Export Data</span>
+                    </div>
+                </a>
+                <a href="/" class="modern-btn-secondary text-center p-6">
+                    <div class="flex flex-col items-center gap-2">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10,20V14H14V20V21H10V20M12,1L21,5V11C21,16.55 17.16,21.74 12,23C6.84,21.74 3,16.55 3,11V5L12,1Z" />
+                        </svg>
+                        <span>Main Site</span>
+                    </div>
+                </a>
             </div>
         </div>
-    </main>
-</body>
-</html>
+    </div>
+</div>
+{% endblock %}
