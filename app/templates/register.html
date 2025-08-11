@@ -25,6 +25,24 @@
             </div>
             {% endif %}
 
+            {% if errors %}
+            <div class="alert-error mb-6">
+                <div class="flex items-start gap-2">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="mt-0.5 flex-shrink-0">
+                        <path d="M12,2L13.09,8.26L22,9L17.22,13.78L18.18,22L12,18.54L5.82,22L6.78,13.78L2,9L10.91,8.26L12,2Z"/>
+                    </svg>
+                    <div>
+                        <p class="font-medium mb-2">Please fix these issues:</p>
+                        <ul class="list-disc list-inside space-y-1 text-sm">
+                            {% for error in errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
             <form method="post" class="space-y-6">
                 <div>
                     <label class="modern-label">
@@ -34,7 +52,7 @@
                         What's your first name?
                     </label>
                     <input type="text" name="first_name" placeholder="Enter your awesome name!" 
-                           class="modern-input" required>
+                           class="modern-input" value="{{ first_name or '' }}" required>
                 </div>
 
                 <div>
@@ -45,9 +63,9 @@
                         How old are you?
                     </label>
                     <select name="age" class="modern-input" required>
-                        <option disabled selected>Choose your age</option>
-                        {% for age in range(5, 18) %}
-                        <option value="{{ age }}">{{ age }} years old</option>
+                        <option disabled {% if not age %}selected{% endif %}>Choose your age</option>
+                        {% for age_option in range(3, 19) %}
+                        <option value="{{ age_option }}" {% if age == age_option %}selected{% endif %}>{{ age_option }} years old</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -60,7 +78,7 @@
                         Parent's Email Address
                     </label>
                     <input type="email" name="parent_email" placeholder="parent@example.com" 
-                           class="modern-input" required>
+                           class="modern-input" value="{{ parent_email or '' }}" required>
                     <p class="text-sm text-gray-500 mt-2">We'll send your access code to your parent</p>
                 </div>
 

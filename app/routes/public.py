@@ -82,11 +82,60 @@ async def register_student(
 ):
     import random
     import string
+    import re
+    
+    # Input validation
+    errors = []
+    
+    # Validate first name
+    first_name = first_name.strip()
+    if not first_name or len(first_name) < 2:
+        errors.append("First name must be at least 2 characters long")
+    elif not re.match(r"^[a-zA-Z\s]+$", first_name):
+        errors.append("First name can only contain letters and spaces")
+    
+    # Validate age
+    if age < 3 or age > 18:
+        errors.append("Age must be between 3 and 18")
+    
+    # Validate email format
+    parent_email = parent_email.strip().lower()
+    email_pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+    if not re.match(email_pattern, parent_email):
+        errors.append("Please enter a valid email address")
+    
+    # Check for duplicate email
+    if not errors:
+        email_stmt = select(Student).where(Student.parent_email == parent_email)
+        email_result = await db.execute(email_stmt)
+        existing_email = email_result.scalar_one_or_none()
+        if existing_email:
+            errors.append("A student with this parent email is already registered")
+    
+    # Check for duplicate name + age combination (same child)
+    if not errors:
+        name_age_stmt = select(Student).where(
+            Student.first_name.ilike(first_name),
+            Student.age == age
+        )
+        name_age_result = await db.execute(name_age_stmt)
+        existing_student = name_age_result.scalar_one_or_none()
+        if existing_student:
+            errors.append("A student with this name and age is already registered")
+    
+    # If validation errors, return with errors
+    if errors:
+        return templates.TemplateResponse("register.html", {
+            "request": request,
+            "errors": errors,
+            "first_name": first_name,
+            "age": age,
+            "parent_email": parent_email
+        })
     
     # Generate unique access code
     while True:
         access_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
-        # Check if code already exists
         stmt = select(Student).where(Student.access_code == access_code)
         result = await db.execute(stmt)
         if not result.scalar_one_or_none():
@@ -95,7 +144,7 @@ async def register_student(
     # Create new student
     try:
         student = Student(
-            first_name=first_name,
+            first_name=first_name.title(),  # Proper case
             age=age,
             parent_email=parent_email,
             access_code=access_code
@@ -112,7 +161,11 @@ async def register_student(
         })
         
     except Exception as e:
+        await db.rollback()
         return templates.TemplateResponse("register.html", {
             "request": request, 
-            "error": "Registration failed. Please try again."
+            "error": "Registration failed due to database error. Please try again.",
+            "first_name": first_name,
+            "age": age,
+            "parent_email": parent_email
         })
