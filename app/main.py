@@ -14,9 +14,9 @@ async def lifespan(app: FastAPI):
         # Create database tables
         async with engine.begin() as conn:
             await conn.run_sync(Base.metadata.create_all)
-        print("✅ Database tables created successfully")
+        print("Database tables created successfully")
     except Exception as e:
-        print(f"❌ Database connection failed: {e}")
+        print(f"Database connection failed: {e}")
         print("Make sure PostgreSQL service is added in Railway dashboard")
         # Don't fail startup - let the app run and show error pages
     yield
@@ -43,7 +43,8 @@ async def health_check():
     try:
         # Test database connection
         async with engine.begin() as conn:
-            await conn.execute("SELECT 1")
+            from sqlalchemy import text
+            await conn.execute(text("SELECT 1"))
         return {
             "status": "healthy", 
             "message": "CIFIX Kids Hub is running!",
